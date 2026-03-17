@@ -1,0 +1,357 @@
+/**
+ * TRUE ROOTS — Design Tokens v2.0
+ * Two-layer architecture: Primitives → Semantic
+ *
+ * USAGE:
+ *   Always use semantic tokens in components, never primitives directly.
+ *   Primitives are the source of truth; semantics are the interface.
+ *
+ *   ✅  background: var(--background);
+ *   ❌  background: var(--color-cream);   ← only inside token definitions
+ *   ❌  background: #FFFCF1;              ← hardcoded values forbidden
+ *
+ * IMPORT ORDER in HTML:
+ *   <link rel="stylesheet" href="tokens.css">
+ *   <link rel="stylesheet" href="styles.css">
+ */
+
+/* ============================================================
+   LAYER 1 — PRIMITIVE TOKENS
+   Raw values. Do not use directly in components.
+   ============================================================ */
+
+:root {
+
+  /* ── Color Primitives ────────────────────────────────────── */
+
+  --color-white:        #FFFFFF;   /* Pure white (dark text-on-dark use) */
+  --color-cream:        #FFFCF1;   /* Primary background (light) */
+  --color-arena:        #EAE2C7;   /* Alt background, borders    */
+  --color-olive-light:  #BABD8B;   /* Soft highlight             */
+  --color-neutral:      #BFBDB2;   /* Neutral grey — UI chrome, disabled borders, quiet surfaces */
+  --color-light-soil:   #918370;   /* Muted text / captions      */
+  --color-terracotta:   #AE6C40;   /* Primary accent             */
+  --color-olive-haze:   #5D5F30;   /* Secondary accent           */
+  --color-soil:         #3F2814;   /* Primary text (light)       */
+  --color-dark-raised:  #2E2E2E;   /* Raised surface (dark)      */
+  --color-dark-surface: #242424;   /* Surface (dark)             */
+  --color-dark:         #1A1A1A;   /* Primary background (dark)  */
+
+  /* ── Typography Primitives ───────────────────────────────── */
+
+  --font-primary:  'Manrope', sans-serif;
+  --font-mono:     'IBM Plex Mono', monospace;
+
+  /* Font sizes — scale based on 16px base */
+  --font-size-xs:    0.6875rem;  /* 11px  — labels, tags        */
+  --font-size-sm:    0.75rem;    /* 12px  — captions, metadata  */
+  --font-size-base:  1rem;       /* 16px  — body                */
+  --font-size-md:    1.125rem;   /* 18px  — body emphasis       */
+  --font-size-lg:    1.5rem;     /* 24px  — large body / intro  */
+  --font-size-xl:    2rem;       /* 32px  — h3 / section title  */
+  --font-size-2xl:   2.5rem;     /* 40px  — h2                  */
+  --font-size-3xl:   3rem;       /* 48px  — h1                  */
+  --font-size-4xl:   4rem;       /* 64px  — hero                */
+  --font-size-hero:  5.25rem;    /* 84px  — presentation only   */
+
+  /* Font weights */
+  --font-weight-light:     300;
+  --font-weight-regular:   400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+
+  /* Line heights */
+  --leading-tight:    1.1;
+  --leading-snug:     1.2;
+  --leading-normal:   1.4;
+  --leading-relaxed:  1.6;
+  --leading-loose:    1.8;
+
+  /* Letter spacing */
+  --tracking-tighter:  -0.02em;
+  --tracking-tight:    -0.01em;
+  --tracking-normal:    0em;
+  --tracking-wide:      0.04em;
+  --tracking-wider:     0.08em;
+  --tracking-widest:    0.15em;
+
+  /* ── Spacing Primitives ──────────────────────────────────── */
+
+  --space-1:   0.25rem;   /*   4px */
+  --space-2:   0.5rem;    /*   8px */
+  --space-3:   0.75rem;   /*  12px */
+  --space-4:   1rem;      /*  16px */
+  --space-6:   1.5rem;    /*  24px */
+  --space-8:   2rem;      /*  32px */
+  --space-10:  2.5rem;    /*  40px */
+  --space-12:  3rem;      /*  48px */
+  --space-16:  4rem;      /*  64px */
+  --space-20:  5rem;      /*  80px */
+  --space-24:  6rem;      /*  96px */
+  --space-32:  8rem;      /* 128px */
+
+  /* ── Border Radius ───────────────────────────────────────── */
+
+  --radius-none:  0px;
+  --radius-sm:    2px;      /* Buttons, cards, inputs — brand standard */
+  --radius-md:    4px;      /* Modals, dropdowns                       */
+  --radius-full:  9999px;   /* Pills, circles (slide indicators)       */
+
+  /* ── Shadows / Elevation ─────────────────────────────────── */
+
+  --shadow-sm:   0 1px 3px rgba(63, 40, 20, 0.08);
+  --shadow-md:   0 4px 16px rgba(63, 40, 20, 0.12);
+  --shadow-lg:   0 8px 32px rgba(63, 40, 20, 0.16);
+  --shadow-dark: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+  /* ── Z-Index Scale ───────────────────────────────────────── */
+
+  --z-below:     -1;
+  --z-base:       0;
+  --z-raised:    10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-tooltip:  600;
+
+  /* ── Motion / Transitions ────────────────────────────────── */
+
+  --ease-in-out:    cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:       cubic-bezier(0, 0, 0.2, 1);
+  --ease-in:        cubic-bezier(0.4, 0, 1, 1);
+
+  --duration-fast:   150ms;
+  --duration-base:   250ms;
+  --duration-slow:   400ms;
+
+  --transition-fast:  var(--duration-fast) var(--ease-in-out);
+  --transition-base:  var(--duration-base) var(--ease-in-out);
+  --transition-slow:  var(--duration-slow) var(--ease-in-out);
+
+  /* ── Layout / Grid ───────────────────────────────────────── */
+
+  --container-max:          1440px;
+  --container-padding:      var(--space-8);   /* 32px */
+  --container-padding-sm:   var(--space-4);   /* 16px */
+  --header-height:          80px;
+  --header-height-mobile:   60px;
+
+  /* Breakpoints (reference comments — use in @media queries)
+     --bp-sm:   640px
+     --bp-md:   768px
+     --bp-lg:   1024px
+     --bp-xl:   1280px
+     --bp-2xl:  1440px
+  */
+}
+
+
+/* ============================================================
+   LAYER 2 — SEMANTIC TOKENS
+   Light theme (default). Use these in all components.
+   ============================================================ */
+
+:root {
+
+  /* ── Backgrounds ─────────────────────────────────────────── */
+
+  --background:          var(--color-cream);       /* Page background          */
+  --surface:             var(--color-arena);        /* Card, input background   */
+  --surface-raised:      var(--color-cream);        /* Modal, popover           */
+  --surface-overlay:     rgba(26, 26, 26, 0.6);    /* Backdrop overlay         */
+
+  /* ── Text ────────────────────────────────────────────────── */
+
+  --foreground:          var(--color-soil);         /* Primary text             */
+  --muted-foreground:    var(--color-light-soil);   /* Captions, placeholders   */
+  --heading-color:       var(--color-soil);         /* H1–H4                    */
+  --label-color:         var(--color-olive-haze);   /* IBM Plex Mono labels     */
+
+  /* ── Brand Colors ────────────────────────────────────────── */
+
+  --primary:             var(--color-terracotta);   /* CTAs, highlights, rings  */
+  --primary-foreground:  var(--color-cream);        /* Text on primary bg       */
+  --primary-hover:       #9A5B32;                   /* Darker terracotta        */
+  --primary-active:      #8A4E2A;                   /* Pressed state            */
+
+  --secondary:           var(--color-olive-haze);   /* Secondary CTAs, icons    */
+  --secondary-foreground: var(--color-cream);       /* Text on secondary bg     */
+  --secondary-hover:     #4A4C24;                   /* Darker olive             */
+  --secondary-active:    #3D3F1C;                   /* Pressed state            */
+
+  /* ── Accents ─────────────────────────────────────────────── */
+
+  --accent:              var(--color-arena);        /* Subtle highlight surface */
+  --accent-foreground:   var(--color-soil);
+
+  --highlight:           var(--color-olive-light);  /* Soft green tint          */
+
+  /* ── Borders & Rings ─────────────────────────────────────── */
+
+  --border:              var(--color-arena);        /* Dividers, inputs         */
+  --border-strong:       var(--color-light-soil);   /* Active borders           */
+  --ring:                var(--color-terracotta);   /* Focus outline            */
+
+  /* ── Neutral ─────────────────────────────────────────────── */
+
+  --neutral:             var(--color-neutral);          /* Quiet borders, disabled UI chrome */
+  --neutral-foreground:  var(--color-soil);             /* Text on neutral surface — light   */
+
+  /* ── Interactive States ──────────────────────────────────── */
+
+  --disabled-bg:         var(--color-arena);
+  --disabled-fg:         var(--color-light-soil);
+  --disabled-opacity:    0.5;
+
+  /* ── Focus ───────────────────────────────────────────────── */
+
+  --focus-ring:          0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+
+
+/* ============================================================
+   LAYER 2 — DARK THEME
+   Apply via [data-theme="dark"] on <html> or <body>.
+   ============================================================ */
+
+[data-theme="dark"] {
+
+  /* ── Backgrounds ─────────────────────────────────────────── */
+
+  --background:          var(--color-dark);
+  --surface:             var(--color-dark-surface);
+  --surface-raised:      var(--color-dark-raised);
+  --surface-overlay:     rgba(0, 0, 0, 0.7);
+
+  /* ── Text ────────────────────────────────────────────────── */
+
+  --foreground:          var(--color-cream);
+  --muted-foreground:    var(--color-light-soil);
+  --heading-color:       var(--color-cream);
+  --label-color:         var(--color-olive-light);
+
+  /* ── Brand Colors ────────────────────────────────────────── */
+
+  --primary:             var(--color-terracotta);
+  --primary-foreground:  var(--color-cream);
+  --primary-hover:       #C47A4E;                   /* Lighter on dark bg       */
+  --primary-active:      #B56030;                   /* Pressed state (dark)     */
+
+  --secondary:           var(--color-olive-haze);
+  --secondary-foreground: var(--color-cream);
+  --secondary-hover:     #6E7040;                   /* Lighter olive            */
+  --secondary-active:    #525428;                   /* Pressed state (dark)     */
+
+  /* ── Neutral ─────────────────────────────────────────────── */
+  --neutral-foreground:  var(--color-cream);         /* Text on neutral — dark   */
+
+  /* ── Accents ─────────────────────────────────────────────── */
+
+  --accent:              var(--color-dark-surface);
+  --accent-foreground:   var(--color-cream);
+  --highlight:           var(--color-olive-haze);
+
+  /* ── Borders & Rings ─────────────────────────────────────── */
+
+  --border:              rgba(234, 226, 199, 0.12);
+  --border-strong:       rgba(234, 226, 199, 0.3);
+  --ring:                var(--color-terracotta);
+
+  /* ── Interactive States ──────────────────────────────────── */
+
+  --disabled-bg:         var(--color-dark-raised);
+  --disabled-fg:         var(--color-light-soil);
+}
+
+
+/* ============================================================
+   COMPONENT TOKENS
+   Component-specific aliases — keep components decoupled
+   from the semantic layer.
+   ============================================================ */
+
+:root {
+
+  /* ── Button ──────────────────────────────────────────────── */
+
+  --btn-font:            var(--font-mono);
+  --btn-font-size:       var(--font-size-xs);       /* 11px */
+  --btn-font-weight:     var(--font-weight-medium);
+  --btn-letter-spacing:  var(--tracking-widest);    /* 0.15em */
+  --btn-text-transform:  uppercase;
+  --btn-radius:          var(--radius-sm);          /* 2px */
+  --btn-height:          48px;
+  --btn-height-sm:       36px;
+  --btn-padding-x:       var(--space-6);            /* 24px */
+  --btn-transition:      background var(--transition-fast),
+                         transform var(--transition-fast),
+                         box-shadow var(--transition-fast);
+
+  /* Primary (Terracotta) */
+  --btn-primary-bg:           var(--primary);
+  --btn-primary-foreground:   var(--primary-foreground);
+  --btn-primary-bg-hover:     var(--primary-hover);
+  --btn-primary-bg-active:    var(--primary-active);    /* #8A4E2A light / #B56030 dark */
+
+  /* Secondary (Olive) */
+  --btn-secondary-bg:         var(--secondary);
+  --btn-secondary-fg:         var(--secondary-foreground);
+  --btn-secondary-bg-hover:   var(--secondary-hover);
+  --btn-secondary-bg-active:  var(--secondary-active);  /* #3D3F1C light / #525428 dark */
+
+  /* Disabled */
+  --btn-disabled-bg:          var(--disabled-bg);
+  --btn-disabled-fg:          var(--disabled-fg);
+
+  /* ── Input ───────────────────────────────────────────────── */
+
+  --input-font:          var(--font-primary);
+  --input-font-size:     var(--font-size-base);
+  --input-height:        48px;
+  --input-padding-x:     var(--space-4);
+  --input-radius:        var(--radius-sm);
+  --input-bg:            var(--surface);
+  --input-fg:            var(--foreground);
+  --input-placeholder:   var(--muted-foreground);
+  --input-border:        var(--border);
+  --input-border-focus:  var(--ring);
+
+  /* ── Navigation ──────────────────────────────────────────── */
+
+  --nav-height:          var(--header-height);
+  --nav-height-mobile:   var(--header-height-mobile);
+  --nav-bg:              transparent;
+  --nav-bg-scrolled:     rgba(26, 26, 26, 0.95);
+  --nav-fg:              var(--color-cream);
+  --nav-link-font:       var(--font-mono);
+  --nav-link-size:       var(--font-size-sm);      /* 12px — IBM Plex Mono */
+  --nav-link-weight:     var(--font-weight-regular); /* 400 — not uppercase */
+  --nav-link-spacing:    0.03em;
+  --nav-link-hover:      var(--color-arena);   /* Arena on dark nav bg */
+  /* Wordmark is an SVG logo — LOGO_TR – SIMPLE.svg, height 16px, filter:invert(1) on dark */
+  --nav-wordmark-height: 16px;
+  --nav-meta-font:       var(--font-mono);
+  --nav-meta-size:       var(--font-size-xs);
+  --nav-meta-spacing:    var(--tracking-wide);
+  --nav-z:               var(--z-sticky);
+
+  /* ── Card ────────────────────────────────────────────────── */
+
+  --card-bg:             var(--surface);
+  --card-fg:             var(--foreground);
+  --card-radius:         var(--radius-sm);
+  --card-border:         var(--border);
+  --card-shadow:         var(--shadow-sm);
+  --card-padding:        var(--space-6);
+
+  /* ── Section Label (IBM Plex Mono uppercase) ─────────────── */
+
+  --section-label-font:     var(--font-mono);
+  --section-label-size:     var(--font-size-xs);    /* 11px */
+  --section-label-weight:   var(--font-weight-regular);
+  --section-label-spacing:  var(--tracking-widest); /* 0.15em */
+  --section-label-color:    var(--label-color);
+  --section-label-transform: uppercase;
+}

@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRUE ROOTS — Design System v2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ─────────────────────────────────────────────────────────────
+   LAYER 1 — PRIMITIVES
+───────────────────────────────────────────────────────────── */
+:root {
+  --color-white:        #FFFFFF;
+  --color-cream:        #FFFCF1;
+  --color-arena:        #EAE2C7;
+  --color-olive-light:  #BABD8B;
+  --color-neutral:      #BFBDB2;
+  --color-light-soil:   #918370;
+  --color-terracotta:   #AE6C40;
+  --color-olive-haze:   #5D5F30;
+  --color-soil:         #3F2814;
+  --color-dark-raised:  #2E2E2E;
+  --color-dark-surface: #242424;
+  --color-dark:         #1A1A1A;
+
+  --font-primary: 'Manrope', sans-serif;
+  --font-mono:    'IBM Plex Mono', monospace;
+
+  --font-size-xs:   0.6875rem;
+  --font-size-sm:   0.75rem;
+  --font-size-base: 1rem;
+  --font-size-md:   1.125rem;
+  --font-size-lg:   1.5rem;
+  --font-size-xl:   2rem;
+  --font-size-2xl:  2.5rem;
+  --font-size-3xl:  3rem;
+  --font-size-4xl:  4rem;
+
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  --radius-sm:   2px;
+  --radius-md:   4px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(63,40,20,0.08);
+  --shadow-md: 0 4px 16px rgba(63,40,20,0.12);
+
+  --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
+  --transition-base: 250ms cubic-bezier(0.4,0,0.2,1);
+
+  --container-max:     1440px;
+  --header-height:     80px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LAYER 2 — SEMANTIC (light, default)
+───────────────────────────────────────────────────────────── */
+:root,
+[data-theme="light"] {
+  --background:         var(--color-cream);
+  --surface:            var(--color-arena);
+  --surface-raised:     var(--color-cream);
+  --foreground:         var(--color-soil);
+  --muted-foreground:   var(--color-light-soil);
+  --heading-color:      var(--color-soil);
+  --label-color:        var(--color-olive-haze);
+  --primary:              var(--color-terracotta);
+  --primary-foreground:   var(--color-cream);
+  --primary-hover:        #9A5B32;
+  --primary-active:       #8A4E2A;
+  --secondary:            var(--color-olive-haze);
+  --secondary-foreground: var(--color-cream);
+  --secondary-hover:      #4A4C24;
+  --secondary-active:     #3D3F1C;
+  --border:             var(--color-arena);
+  --border-strong:      var(--color-light-soil);
+  --ring:               var(--color-terracotta);
+  --neutral:            var(--color-neutral);
+  --neutral-foreground: var(--color-soil);
+  --disabled-bg:        var(--color-arena);
+  --disabled-fg:        var(--color-light-soil);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LAYER 2 — SEMANTIC (dark)
+───────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --background:         var(--color-dark);
+  --surface:            var(--color-dark-surface);
+  --surface-raised:     var(--color-dark-raised);
+  --foreground:         var(--color-cream);
+  --muted-foreground:   var(--color-light-soil);
+  --heading-color:      var(--color-cream);
+  --label-color:        var(--color-olive-light);
+  --primary:              var(--color-terracotta);
+  --primary-foreground:   var(--color-cream);
+  --primary-hover:        #C47A4E;
+  --primary-active:       #B56030;
+  --secondary:            var(--color-olive-haze);
+  --secondary-foreground: var(--color-cream);
+  --secondary-hover:      #6E7040;
+  --secondary-active:     #525428;
+  --border:               rgba(234,226,199,0.12);
+  --border-strong:        rgba(234,226,199,0.3);
+  --ring:                 var(--color-terracotta);
+  --disabled-bg:          var(--color-dark-raised);
+  --disabled-fg:          var(--color-light-soil);
+  --neutral-foreground:   var(--color-cream);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BASE RESET & GLOBALS
+───────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-primary);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 16px;
+  line-height: 1.6;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   NAVIGATION (sticky top bar)
+───────────────────────────────────────────────────────────── */
+.sg-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--color-dark);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 48px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.sg-nav-brand {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-light-soil);
+  white-space: nowrap;
+}
+.sg-nav-brand span { color: var(--color-cream); }
+.sg-nav-links {
+  display: flex;
+  gap: 0;
+  list-style: none;
+  overflow-x: auto;
+}
+.sg-nav-links a {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-light-soil);
+  text-decoration: none;
+  padding: 4px 14px;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+.sg-nav-links a:hover { color: var(--color-cream); }
+
+/* Theme toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 2px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-light-soil);
+  white-space: nowrap;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+.theme-toggle:hover { color: var(--color-cream); border-color: rgba(255,255,255,0.3); }
+.theme-toggle .icon { font-size: 12px; }
+
+/* ─────────────────────────────────────────────────────────────
+   COVER
+───────────────────────────────────────────────────────────── */
+.cover {
+  background: var(--color-dark);
+  padding: 80px 64px 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.cover-left {}
+.cover-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-light-soil);
+  margin-bottom: 20px;
+}
+.cover-title {
+  font-family: var(--font-primary);
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-cream);
+}
+.cover-title em {
+  font-style: normal;
+  color: var(--color-terracotta);
+}
+.cover-sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--color-olive-light);
+  margin-top: 20px;
+}
+.cover-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+}
+.cover-version {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--color-light-soil);
+  text-transform: uppercase;
+}
+.cover-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.pill-green  { background: rgba(93,95,48,0.4);   color: var(--color-olive-light); }
+.pill-terra  { background: rgba(174,108,64,0.25); color: var(--color-terracotta); }
+.pill-muted  { background: rgba(255,255,255,0.06); color: var(--color-light-soil); }
+
+/* ─────────────────────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────────────────────── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 64px; }
+
+.sg-section {
+  padding: 72px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sg-section:last-child { border-bottom: none; }
+
+.section-header { margin-bottom: 48px; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--label-color);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-primary);
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--heading-color);
+}
+.section-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+  margin-top: 12px;
+  max-width: 600px;
+}
+
+/* Subsection */
+.subsection { margin-top: 48px; }
+.subsection-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COLOR SECTION
+───────────────────────────────────────────────────────────── */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+.color-card {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.color-swatch {
+  height: 80px;
+  position: relative;
+}
+.color-swatch.bordered { border-bottom: 1px solid var(--border); }
+.color-info { padding: 12px; background: var(--surface); }
+.color-name {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 3px;
+}
+.color-hex {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin-bottom: 3px;
+}
+.color-role {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+}
+
+/* Semantic token table */
+.token-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.token-table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.token-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.token-table tr:last-child td { border-bottom: none; }
+.token-table tr:hover td { background: rgba(174,108,64,0.04); }
+.token-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--primary);
+}
+.token-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.token-swatch-sm {
+  width: 20px; height: 20px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  display: inline-block;
+  vertical-align: middle;
+}
+.token-desc { font-size: 12px; color: var(--muted-foreground); }
+
+/* Dark/Light theme preview side-by-side */
+.theme-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.theme-preview-pane {
+  padding: 32px 28px;
+}
+.theme-preview-pane.light { background: var(--color-cream); }
+.theme-preview-pane.dark  { background: var(--color-dark); }
+.theme-preview-pane .tp-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.theme-preview-pane.light .tp-label { color: var(--color-light-soil); }
+.theme-preview-pane.dark  .tp-label { color: var(--color-light-soil); }
+
+/* Light pane */
+.theme-preview-pane.light .tp-bg    { background: var(--color-arena); border-radius: 2px; }
+.theme-preview-pane.light .tp-title { color: var(--color-soil); }
+.theme-preview-pane.light .tp-body  { color: var(--color-soil); }
+.theme-preview-pane.light .tp-meta  { color: var(--color-light-soil); }
+
+/* Dark pane */
+.theme-preview-pane.dark .tp-bg    { background: var(--color-dark-surface); border-radius: 2px; }
+.theme-preview-pane.dark .tp-title { color: var(--color-cream); }
+.theme-preview-pane.dark .tp-body  { color: var(--color-cream); }
+.theme-preview-pane.dark .tp-meta  { color: var(--color-light-soil); }
+
+.tp-bg    { padding: 12px; margin-bottom: 8px; }
+.tp-title { font-family: var(--font-primary); font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.tp-body  { font-size: 13px; margin-bottom: 12px; }
+.tp-meta  { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+.tp-row   { display: flex; gap: 8px; margin-top: 12px; }
+.tp-btn   {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+}
+.tp-btn-primary   { background: var(--color-terracotta); color: var(--color-cream); }
+.tp-btn-secondary { background: var(--color-olive-haze); color: var(--color-cream); }
+
+/* ─────────────────────────────────────────────────────────────
+   TYPOGRAPHY SECTION
+───────────────────────────────────────────────────────────── */
+.font-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 48px;
+}
+.font-card {
+  padding: 32px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+}
+.font-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 20px;
+}
+.font-specimen {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: var(--heading-color);
+}
+.font-mono-specimen {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: var(--heading-color);
+}
+.font-use-cases {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+
+/* Type scale rows */
+.type-scale-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 200px;
+  gap: 24px;
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.type-scale-row:last-child { border-bottom: none; }
+.type-scale-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+.type-scale-meta strong {
+  display: block;
+  font-size: 11px;
+  color: var(--foreground);
+  margin-bottom: 4px;
+}
+.type-spec {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted-foreground);
+  text-align: right;
+  line-height: 1.8;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SPACING SECTION
+───────────────────────────────────────────────────────────── */
+.spacing-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.spacing-row:last-child { border-bottom: none; }
+.spacing-bar-wrap { flex: 1; }
+.spacing-bar {
+  height: 24px;
+  background: var(--primary);
+  border-radius: 1px;
+  opacity: 0.7;
+}
+.spacing-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--foreground);
+  min-width: 120px;
+}
+.spacing-value {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted-foreground);
+  min-width: 80px;
+  text-align: right;
+}
+
+/* Radius showcase */
+.radius-grid {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.radius-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.radius-box {
+  width: 72px;
+  height: 72px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+}
+.radius-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-align: center;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+.radius-meta strong { display: block; color: var(--foreground); }
+
+/* ─────────────────────────────────────────────────────────────
+   BUTTON COMPONENT
+───────────────────────────────────────────────────────────── */
+.component-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+  margin-bottom: 32px;
+  max-width: 640px;
+}
+
+/* The actual button component */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 24px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--transition-fast),
+              transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+.btn:active { transform: translateY(1px); }
+
+/* Primary — Terracotta */
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.btn-primary:hover  { background: var(--primary-hover); }
+.btn-primary:active { background: var(--primary-active); }
+
+/* Secondary — Olive */
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.btn-secondary:hover  { background: var(--secondary-hover); }
+.btn-secondary:active { background: var(--secondary-active); }
+
+/* Ghost (outline) — light bg */
+.btn-ghost {
+  background: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--border-strong);
+}
+.btn-ghost:hover {
+  background: var(--surface);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Ghost (outline) — dark bg variant */
+.btn-ghost-dark {
+  background: transparent;
+  color: var(--color-cream);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.btn-ghost-dark:hover {
+  background: var(--color-arena);
+  border-color: var(--color-arena);
+  color: var(--color-soil);
+}
+
+/* Small */
+.btn-sm {
+  height: 36px;
+  padding: 0 16px;
+  font-size: 10px;
+}
+
+/* Disabled */
+.btn:disabled,
+.btn.is-disabled {
+  background: var(--disabled-bg) !important;
+  color: var(--disabled-fg) !important;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: none;
+}
+
+/* State showcase */
+.states-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.state-cell {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.state-cell.dark-bg {
+  background: var(--color-dark);
+}
+.state-name {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Button variants on dark */
+.btn-primary-on-dark     { background: var(--primary); color: var(--primary-foreground); }
+.btn-secondary-on-dark   { background: var(--secondary); color: var(--secondary-foreground); }
+
+/* Simulate hover state visually */
+.state-hover.btn-primary   { background: var(--primary-hover); }
+.state-hover.btn-secondary { background: var(--secondary-hover); }
+.state-focus.btn-primary   { background: var(--primary); box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring); }
+.state-focus.btn-secondary { background: var(--secondary); box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--secondary); }
+.state-active.btn-primary  { background: var(--primary-active); transform: translateY(1px); }
+.state-active.btn-secondary { background: var(--secondary-active); transform: translateY(1px); }
+.state-name-on-dark        { color: var(--color-light-soil); }
+
+/* ─────────────────────────────────────────────────────────────
+   NAVIGATION COMPONENT
+───────────────────────────────────────────────────────────── */
+.nav-demo {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.nav-demo-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--surface);
+  color: var(--muted-foreground);
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Demo nav — desktop */
+.demo-nav {
+  height: 80px;
+  background: var(--color-dark);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 0;
+}
+.demo-nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  flex: 1;
+}
+.demo-nav-links a {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: var(--color-cream);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.demo-nav-links a:hover { color: var(--color-arena); }
+.demo-nav-wordmark {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.demo-nav-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+.demo-nav-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--color-light-soil);
+}
+.demo-nav-lang {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--color-light-soil);
+}
+.demo-nav-lang .active { color: var(--color-cream); }
+
+/* Mobile nav demo */
+.demo-nav-mobile {
+  height: 60px;
+  background: rgba(26,26,26,0.98);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  justify-content: space-between;
+}
+.demo-nav-mobile .wordmark {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+}
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--color-cream);
+  border-radius: 1px;
+}
+
+/* Nav spec table */
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.spec-table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.spec-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  font-size: 13px;
+}
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-prop { font-family: var(--font-mono); font-size: 11px; color: var(--primary); }
+.spec-val  { font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); }
+
+/* ─────────────────────────────────────────────────────────────
+   CALLOUT
+───────────────────────────────────────────────────────────── */
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--primary);
+  padding: 16px 20px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 28px;
+}
+.callout p { font-size: 13px; color: var(--muted-foreground); line-height: 1.6; }
+.callout strong { color: var(--primary); }
+.callout code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--background);
+  padding: 1px 5px;
+  border-radius: 2px;
+  color: var(--foreground);
+}
+
+/* Code block */
+.code-block {
+  background: var(--color-dark);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+.code-block pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--color-arena);
+  white-space: pre;
+}
+.code-comment { color: var(--color-light-soil); }
+.code-var     { color: var(--color-olive-light); }
+.code-val     { color: var(--color-terracotta); }
+.code-prop    { color: var(--color-cream); }
+
+/* ─────────────────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────────────────── */
+.sg-footer {
+  background: var(--color-dark);
+  padding: 32px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.sg-footer-brand {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-light-soil);
+}
+.sg-footer-brand span { color: var(--color-arena); }
+.sg-footer-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-light-soil);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   AESTHETIC UPGRADES — grain overlay + scroll reveals + micro-interactions
+───────────────────────────────────────────────────────────── */
+
+/* Grain overlay on the page */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+}
+
+/* Scroll-reveal animation */
+@keyframes sg-reveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sg-section {
+  animation: sg-reveal 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-play-state: paused;
+}
+.sg-section.is-visible {
+  animation-play-state: running;
+}
+
+/* Color card hover */
+.color-card {
+  transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), box-shadow 0.2s ease;
+}
+.color-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+/* Logo card hover */
+.logo-card {
+  transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), box-shadow 0.2s ease;
+}
+.logo-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+}
+
+/* Token table row highlight */
+.token-table tr {
+  transition: background 0.15s ease;
+}
+.token-table tr:hover td {
+  background: rgba(174,108,64,0.06);
+}
+
+/* Cover subtle bottom gradient */
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(174,108,64,0.3), transparent);
+  pointer-events: none;
+}
+.cover { position: relative; }
+
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVE — TABLET (≤ 900px)
+───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .container { padding: 0 40px; }
+
+  .cover {
+    padding: 60px 40px 56px;
+    gap: 32px;
+  }
+
+  .sg-footer { padding: 28px 40px; }
+
+  .sg-nav { padding: 0 28px; gap: 16px; }
+
+  .logo-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .font-pair { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVE — MOBILE (≤ 768px)
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* NAV */
+  .sg-nav {
+    padding: 0 20px;
+    height: auto;
+    min-height: 52px;
+    flex-wrap: wrap;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 8px;
+  }
+  .sg-nav-brand { font-size: 10px; }
+  .sg-nav-links {
+    order: 3;
+    width: 100%;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .sg-nav-links::-webkit-scrollbar { display: none; }
+  .sg-nav-links a { padding: 4px 10px; font-size: 9px; }
+
+  /* COVER */
+  .cover {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 48px 24px 44px;
+    gap: 28px;
+  }
+  .cover-right {
+    align-items: flex-start;
+    width: 100%;
+  }
+  .cover-pills { justify-content: flex-start; }
+  .cover-title { font-size: clamp(32px, 8vw, 48px); }
+
+  /* LAYOUT */
+  .container { padding: 0 20px; }
+  .sg-section { padding: 48px 0; }
+  .section-title { font-size: 28px; }
+  .section-header { margin-bottom: 32px; }
+  .subsection { margin-top: 32px; }
+
+  /* COLOR GRID */
+  .color-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+
+  /* FONT PAIR */
+  .font-pair { grid-template-columns: 1fr; }
+  .font-card { padding: 24px; }
+  .font-specimen { font-size: 32px; }
+  .font-mono-specimen { font-size: 24px; }
+
+  /* LOGO GRID */
+  .logo-grid { grid-template-columns: repeat(2, 1fr); }
+  .logo-preview { padding: 24px 16px; min-height: 110px; }
+
+  /* NAVIGATION DEMO */
+  .nav-demo { margin-bottom: 16px; }
+  .demo-nav {
+    padding: 0 16px;
+    font-size: 12px;
+  }
+  .demo-nav-links { gap: 4px; }
+  .demo-nav-links a { font-size: 11px; padding: 0 10px; }
+  .demo-nav-meta { display: none; }
+
+  /* SPEC TABLE */
+  .spec-table { font-size: 12px; }
+  .spec-table th, .spec-table td { padding: 8px 10px; }
+
+  /* TOKEN TABLE */
+  .token-table th, .token-table td { padding: 8px 10px; font-size: 12px; }
+
+  /* STATES GRID */
+  .states-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* FOOTER */
+  .sg-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 20px;
+    gap: 8px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVE — SMALL MOBILE (≤ 480px)
+───────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .color-grid { grid-template-columns: repeat(2, 1fr); }
+  .logo-grid { grid-template-columns: 1fr; }
+  .states-grid { grid-template-columns: 1fr; }
+  .cover-title { font-size: 30px; }
+  .section-title { font-size: 24px; }
+  .container { padding: 0 16px; }
+  .cover { padding: 36px 16px 32px; }
+  .sg-footer { padding: 20px 16px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="sg-nav">
+  <span class="sg-nav-brand"><span>TRUE ROOTS</span> — Design System v2</span>
+  <ul class="sg-nav-links">
+    <li><a href="#colors">Colors</a></li>
+    <li><a href="#typography">Typography</a></li>
+    <li><a href="#spacing">Spacing</a></li>
+    <li><a href="#tokens">Tokens</a></li>
+    <li><a href="#button">Button</a></li>
+    <li><a href="#navigation">Navigation</a></li>
+    <li><a href="#logos">Logos</a></li>
+  </ul>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+    <span class="icon">☀</span> <span id="themeLabel">Light</span>
+  </button>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-left">
+    <div class="cover-tag">True Roots · Design System · Bowl &amp; Soul S.L.</div>
+    <h1 class="cover-title">Design System<br><em>Version 2.0</em></h1>
+    <p class="cover-sub">Tokens · Typography · Spacing · Components · Dark Mode</p>
+  </div>
+  <div class="cover-right">
+    <span class="cover-version">Version 2.0 · March 2026</span>
+    <div class="cover-pills">
+      <span class="pill pill-green">Light + Dark</span>
+      <span class="pill pill-terra">Two-layer tokens</span>
+      <span class="pill pill-muted">Soil fixed #3F2814</span>
+      <span class="pill pill-muted">Bistro · Shopify · Course</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     01 · COLOR SYSTEM
+════════════════════════════════════════════════════════════ -->
+<section id="colors" class="sg-section">
+<div class="container">
+
+  <div class="section-header">
+    <div class="section-label">01 · Color System</div>
+    <h2 class="section-title">7 primitives. 2 themes.</h2>
+    <p class="section-desc">The palette is defined once as primitive tokens and aliased into semantic tokens per theme. Never use primitive tokens in components — always reference the semantic layer.</p>
+  </div>
+
+  <!-- Primitive palette -->
+  <div class="subsection">
+    <div class="subsection-label">Primitive Palette</div>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch bordered" style="background:var(--color-cream)"></div>
+        <div class="color-info">
+          <div class="color-name">Cream</div>
+          <div class="color-hex">--color-cream · #FFFCF1</div>
+          <div class="color-role">Primary BG · Light</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch bordered" style="background:var(--color-arena)"></div>
+        <div class="color-info">
+          <div class="color-name">Arena</div>
+          <div class="color-hex">--color-arena · #EAE2C7</div>
+          <div class="color-role">Alt BG · Borders</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:var(--color-olive-light)"></div>
+        <div class="color-info">
+          <div class="color-name">Olive Light</div>
+          <div class="color-hex">--color-olive-light · #BABD8B</div>
+          <div class="color-role">Highlight · Dark Labels</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch bordered" style="background:var(--color-neutral)"></div>
+        <div class="color-info">
+          <div class="color-name">Neutral</div>
+          <div class="color-hex">--color-neutral · #BFBDB2</div>
+          <div class="color-role">UI chrome · Quiet borders</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:var(--color-light-soil)"></div>
+        <div class="color-info">
+          <div class="color-name">Light Soil</div>
+          <div class="color-hex">--color-light-soil · #918370</div>
+          <div class="color-role">Muted · Captions</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:var(--color-terracotta)"></div>
+        <div class="color-info">
+          <div class="color-name">Terracotta</div>
+          <div class="color-hex">--color-terracotta · #AE6C40</div>
+          <div class="color-role">Primary Accent</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:var(--color-olive-haze)"></div>
+        <div class="color-info">
+          <div class="color-name">Olive Haze</div>
+          <div class="color-hex">--color-olive-haze · #5D5F30</div>
+          <div class="color-role">Secondary Accent</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:var(--color-soil)"></div>
+        <div class="color-info">
+          <div class="color-name">Soil</div>
+          <div class="color-hex">--color-soil · #3F2814</div>
+          <div class="color-role">Primary Text · Light</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:var(--color-dark)"></div>
+        <div class="color-info">
+          <div class="color-name">Dark</div>
+          <div class="color-hex">--color-dark · #1A1A1A</div>
+          <div class="color-role">Primary BG · Dark</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Theme preview -->
+  <div class="subsection">
+    <div class="subsection-label">Theme Preview — Light vs Dark</div>
+    <div class="theme-preview">
+      <div class="theme-preview-pane light">
+        <div class="tp-label">Light Theme</div>
+        <div class="tp-bg">
+          <div class="tp-title">Gastronomic Longevity</div>
+          <div class="tp-body">Rooted in balance, driven by flavour. Premium food for long life.</div>
+          <div class="tp-meta">Barcelona · Est. 2025</div>
+        </div>
+        <div class="tp-row">
+          <button class="tp-btn tp-btn-primary">Order Catering</button>
+          <button class="tp-btn tp-btn-secondary">Visit Space</button>
+        </div>
+      </div>
+      <div class="theme-preview-pane dark">
+        <div class="tp-label">Dark Theme</div>
+        <div class="tp-bg">
+          <div class="tp-title">Gastronomic Longevity</div>
+          <div class="tp-body">Rooted in balance, driven by flavour. Premium food for long life.</div>
+          <div class="tp-meta">Barcelona · Est. 2025</div>
+        </div>
+        <div class="tp-row">
+          <button class="tp-btn tp-btn-primary">Order Catering</button>
+          <button class="tp-btn tp-btn-secondary">Visit Space</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     02 · TYPOGRAPHY
+════════════════════════════════════════════════════════════ -->
+<section id="typography" class="sg-section">
+<div class="container">
+
+  <div class="section-header">
+    <div class="section-label">02 · Typography System</div>
+    <h2 class="section-title">Manrope + IBM Plex Mono</h2>
+    <p class="section-desc">Two fonts, two roles. Manrope carries warmth and narrative; IBM Plex Mono carries structure, precision, and the brand's scientific edge. Below is the <strong>web scale</strong> — distinct from the presentation scale in slide decks.</p>
+  </div>
+
+  <!-- Font pair -->
+  <div class="font-pair">
+    <div class="font-card">
+      <div class="font-label">Primary · Manrope</div>
+      <div class="font-specimen" style="font-family:'Manrope',sans-serif">Manrope</div>
+      <div class="font-use-cases">Headlines · Body · Emphasis · Navigation links · Buttons body</div>
+    </div>
+    <div class="font-card">
+      <div class="font-label">Secondary · IBM Plex Mono</div>
+      <div class="font-mono-specimen" style="font-family:'IBM Plex Mono',monospace">IBM Plex Mono</div>
+      <div class="font-use-cases">Section labels · Captions · Numbers · Tags · Button CTA · Metadata</div>
+    </div>
+  </div>
+
+  <!-- Web type scale -->
+  <div class="subsection">
+    <div class="subsection-label">Web Type Scale</div>
+
+    <div class="type-scale-row">
+      <div class="type-scale-meta">
+        <strong>Hero / Display</strong>
+        --font-size-4xl
+      </div>
+      <div style="font-family:'Manrope',sans-serif; font-size:clamp(40px,5vw,64px); font-weight:600; letter-spacing:-0.02em; line-height:1.1; color:var(--heading-color)">Rooted in balance</div>
+      <div class="type-spec">Manrope SemiBold<br>64px / −0.02em / lh 1.1</div>
+    </div>
+
+    <div class="type-scale-row">
+      <div class="type-scale-meta">
+        <strong>H1</strong>
+        --font-size-3xl
+      </div>
+      <div style="font-family:'Manrope',sans-serif; font-size:clamp(28px,4vw,48px); font-weight:600; letter-spacing:-0.02em; line-height:1.2; color:var(--heading-color)">Slide Title Example</div>
+      <div class="type-spec">Manrope SemiBold<br>48px / −0.02em / lh 1.2</div>
+    </div>
+
+    <div class="type-scale-row">
+      <div class="type-scale-meta">
+        <strong>H2</strong>
+        --font-size-2xl
+      </div>
+      <div style="font-family:'Manrope',sans-serif; font-size:clamp(24px,3vw,40px); font-weight:600; letter-spacing:-0.01em; line-height:1.25; color:var(--heading-color)">Menu of the Season</div>
+      <div class="type-spec">Manrope SemiBold<br>40px / −0.01em / lh 1.25</div>
+    </div>
+
+    <div class="type-scale-row">
+      <div class="type-scale-meta">
+        <strong>Section Label</strong>
+        --font-size-xs
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:400; letter-spacing:0.15em; text-transform:uppercase; color:var(--label-color)">SECTION HEADER EXAMPLE</div>
+      <div class="type-spec">IBM Plex Mono Regular<br>11px / +0.15em / uppercase</div>
+    </div>
+
+    <div class="type-scale-row">
+      <div class="type-scale-meta">
+        <strong>Subtitle</strong>
+        --font-size-md
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:400; letter-spacing:0.02em; line-height:1.4; color:var(--muted-foreground)">Subtitle text that supports the headline</div>
+      <div class="type-spec">IBM Plex Mono Regular<br>18px / +0.02em / lh 1.4</div>
+    </div>
+
+    <div class="type-scale-row">
+      <div class="type-scale-meta">
+        <strong>Body</strong>
+        --font-size-base
+      </div>
+      <div style="font-family:'Manrope',sans-serif; font-size:16px; font-weight:400; line-height:1.6; color:var(--foreground); max-width:480px">This is the main paragraph style used for explanations and content. Easy to read, well spaced, never too dense.</div>
+      <div class="type-spec">Manrope Regular<br>16px / 0em / lh 1.6</div>
+    </div>
+
+    <div class="type-scale-row">
+      <div class="type-scale-meta">
+        <strong>Key Metric</strong>
+        --font-size-2xl
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:40px; font-weight:500; line-height:1.1; color:var(--primary)">48% &nbsp; 3.5x &nbsp; +120%</div>
+      <div class="type-spec">IBM Plex Mono Medium<br>40px / 0em / lh 1.1</div>
+    </div>
+
+    <div class="type-scale-row">
+      <div class="type-scale-meta">
+        <strong>Caption</strong>
+        --font-size-sm
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:400; letter-spacing:0.04em; line-height:1.4; color:var(--muted-foreground)">Source: Internal data · Q1 2026</div>
+      <div class="type-spec">IBM Plex Mono Regular<br>12px / +0.04em / lh 1.4</div>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     03 · SPACING & LAYOUT
+════════════════════════════════════════════════════════════ -->
+<section id="spacing" class="sg-section">
+<div class="container">
+
+  <div class="section-header">
+    <div class="section-label">03 · Spacing &amp; Layout</div>
+    <h2 class="section-title">8px base grid. Named scale.</h2>
+    <p class="section-desc">All spacing uses a named scale built on a 4px unit. Reference tokens by name — never use arbitrary pixel values or hardcoded rem values.</p>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px;">
+    <div>
+      <div class="subsection-label">Spacing Scale</div>
+
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-1</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px"></div></div>
+        <div class="spacing-value">4px · 0.25rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-2</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px"></div></div>
+        <div class="spacing-value">8px · 0.5rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-3</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:12px"></div></div>
+        <div class="spacing-value">12px · 0.75rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-4</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px"></div></div>
+        <div class="spacing-value">16px · 1rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-6</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px"></div></div>
+        <div class="spacing-value">24px · 1.5rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-8</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:32px"></div></div>
+        <div class="spacing-value">32px · 2rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-12</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:48px"></div></div>
+        <div class="spacing-value">48px · 3rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-16</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:64px"></div></div>
+        <div class="spacing-value">64px · 4rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-24</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:96px"></div></div>
+        <div class="spacing-value">96px · 6rem</div>
+      </div>
+      <div class="spacing-row">
+        <div class="spacing-label"><code style="font-family:var(--font-mono);font-size:11px">--space-32</code></div>
+        <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:128px"></div></div>
+        <div class="spacing-value">128px · 8rem</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="subsection-label">Border Radius</div>
+      <div class="radius-grid">
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:0px"></div>
+          <div class="radius-meta"><strong>--radius-none</strong>0px · Default for dividers</div>
+        </div>
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:2px"></div>
+          <div class="radius-meta"><strong>--radius-sm</strong>2px · Buttons, cards, inputs</div>
+        </div>
+        <div class="radius-item">
+          <div class="radius-box" style="border-radius:9999px; width:72px; height:72px"></div>
+          <div class="radius-meta"><strong>--radius-full</strong>9999px · Dots, pills, avatars</div>
+        </div>
+      </div>
+
+      <div class="subsection-label" style="margin-top:40px">Layout Constraints</div>
+      <table class="spec-table">
+        <thead><tr><th>Token</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td class="spec-prop">--container-max</td><td class="spec-val">1440px</td></tr>
+          <tr><td class="spec-prop">--container-padding</td><td class="spec-val">32px (--space-8)</td></tr>
+          <tr><td class="spec-prop">--header-height</td><td class="spec-val">80px desktop</td></tr>
+          <tr><td class="spec-prop">--header-height-mobile</td><td class="spec-val">60px mobile</td></tr>
+          <tr><td class="spec-prop">Breakpoint sm</td><td class="spec-val">640px</td></tr>
+          <tr><td class="spec-prop">Breakpoint md</td><td class="spec-val">768px</td></tr>
+          <tr><td class="spec-prop">Breakpoint lg</td><td class="spec-val">1024px</td></tr>
+          <tr><td class="spec-prop">Breakpoint xl</td><td class="spec-val">1280px</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     04 · SEMANTIC TOKEN REFERENCE
+════════════════════════════════════════════════════════════ -->
+<section id="tokens" class="sg-section">
+<div class="container">
+
+  <div class="section-header">
+    <div class="section-label">04 · Semantic Token Reference</div>
+    <h2 class="section-title">The interface layer.</h2>
+    <p class="section-desc">These are the tokens you use in every component. They resolve to different primitive values depending on the active theme. Switch the theme toggle above to see them change.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>Rule:</strong> components always consume <code>var(--background)</code>, <code>var(--foreground)</code>, <code>var(--primary)</code> — never <code>var(--color-cream)</code> or hardcoded hex values. This is what makes theming work.</p>
+  </div>
+
+  <table class="token-table">
+    <thead>
+      <tr>
+        <th>Token</th>
+        <th>Light</th>
+        <th>Dark</th>
+        <th style="width:32px"></th>
+        <th>Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="token-name">--background</td>
+        <td class="token-value">#FFFCF1 Cream</td>
+        <td class="token-value">#1A1A1A Dark</td>
+        <td><span class="token-swatch-sm" style="background:var(--background)"></span></td>
+        <td class="token-desc">Page background</td>
+      </tr>
+      <tr>
+        <td class="token-name">--surface</td>
+        <td class="token-value">#EAE2C7 Arena</td>
+        <td class="token-value">#242424 Dark Surface</td>
+        <td><span class="token-swatch-sm" style="background:var(--surface)"></span></td>
+        <td class="token-desc">Cards, inputs, subtle areas</td>
+      </tr>
+      <tr>
+        <td class="token-name">--surface-raised</td>
+        <td class="token-value">#FFFCF1 Cream</td>
+        <td class="token-value">#2E2E2E Dark Raised</td>
+        <td><span class="token-swatch-sm" style="background:var(--surface-raised); border:1px solid var(--border)"></span></td>
+        <td class="token-desc">Modals, popovers, tooltips</td>
+      </tr>
+      <tr>
+        <td class="token-name">--foreground</td>
+        <td class="token-value">#3F2814 Soil</td>
+        <td class="token-value">#FFFCF1 Cream</td>
+        <td><span class="token-swatch-sm" style="background:var(--foreground)"></span></td>
+        <td class="token-desc">Primary body text</td>
+      </tr>
+      <tr>
+        <td class="token-name">--muted-foreground</td>
+        <td class="token-value">#918370 Light Soil</td>
+        <td class="token-value">#918370 Light Soil</td>
+        <td><span class="token-swatch-sm" style="background:#918370"></span></td>
+        <td class="token-desc">Captions, placeholders, metadata</td>
+      </tr>
+      <tr>
+        <td class="token-name">--heading-color</td>
+        <td class="token-value">#3F2814 Soil</td>
+        <td class="token-value">#FFFCF1 Cream</td>
+        <td><span class="token-swatch-sm" style="background:var(--heading-color)"></span></td>
+        <td class="token-desc">H1–H4</td>
+      </tr>
+      <tr>
+        <td class="token-name">--label-color</td>
+        <td class="token-value">#5D5F30 Olive Haze</td>
+        <td class="token-value">#BABD8B Olive Light</td>
+        <td><span class="token-swatch-sm" style="background:var(--label-color)"></span></td>
+        <td class="token-desc">IBM Plex Mono section labels</td>
+      </tr>
+      <tr>
+        <td class="token-name">--primary</td>
+        <td class="token-value">#AE6C40 Terracotta</td>
+        <td class="token-value">#AE6C40 Terracotta</td>
+        <td><span class="token-swatch-sm" style="background:var(--color-terracotta)"></span></td>
+        <td class="token-desc">CTAs, highlights, focus rings</td>
+      </tr>
+      <tr>
+        <td class="token-name">--primary-foreground</td>
+        <td class="token-value">#FFFCF1 Cream</td>
+        <td class="token-value">#FFFCF1 Cream</td>
+        <td><span class="token-swatch-sm" style="background:var(--color-cream); border:1px solid var(--color-arena)"></span></td>
+        <td class="token-desc">Text on primary background</td>
+      </tr>
+      <tr>
+        <td class="token-name">--primary-hover</td>
+        <td class="token-value">#9A5B32</td>
+        <td class="token-value">#C47A4E</td>
+        <td><span class="token-swatch-sm" style="background:var(--primary-hover)"></span></td>
+        <td class="token-desc">Primary button hover state</td>
+      </tr>
+      <tr>
+        <td class="token-name">--primary-active</td>
+        <td class="token-value">#8A4E2A</td>
+        <td class="token-value">#B56030</td>
+        <td><span class="token-swatch-sm" style="background:var(--primary-active)"></span></td>
+        <td class="token-desc">Primary button pressed state</td>
+      </tr>
+      <tr>
+        <td class="token-name">--secondary</td>
+        <td class="token-value">#5D5F30 Olive Haze</td>
+        <td class="token-value">#5D5F30 Olive Haze</td>
+        <td><span class="token-swatch-sm" style="background:var(--color-olive-haze)"></span></td>
+        <td class="token-desc">Secondary CTAs, icons</td>
+      </tr>
+      <tr>
+        <td class="token-name">--secondary-active</td>
+        <td class="token-value">#3D3F1C</td>
+        <td class="token-value">#525428</td>
+        <td><span class="token-swatch-sm" style="background:var(--secondary-active)"></span></td>
+        <td class="token-desc">Secondary button pressed state</td>
+      </tr>
+      <tr>
+        <td class="token-name">--neutral-foreground</td>
+        <td class="token-value">#3F2814 Soil</td>
+        <td class="token-value">#FFFCF1 Cream</td>
+        <td><span class="token-swatch-sm" style="background:var(--neutral-foreground)"></span></td>
+        <td class="token-desc">Text on neutral surface</td>
+      </tr>
+      <tr>
+        <td class="token-name">--border</td>
+        <td class="token-value">#EAE2C7 Arena</td>
+        <td class="token-value">rgba(234,226,199,0.12)</td>
+        <td><span class="token-swatch-sm" style="background:var(--border); border:1px solid var(--border-strong)"></span></td>
+        <td class="token-desc">Dividers, input borders</td>
+      </tr>
+      <tr>
+        <td class="token-name">--ring</td>
+        <td class="token-value">#AE6C40 Terracotta</td>
+        <td class="token-value">#AE6C40 Terracotta</td>
+        <td><span class="token-swatch-sm" style="background:var(--color-terracotta)"></span></td>
+        <td class="token-desc">Focus outline</td>
+      </tr>
+      <tr>
+        <td class="token-name">--neutral</td>
+        <td class="token-value">#BFBDB2 Neutral</td>
+        <td class="token-value">#BFBDB2 Neutral</td>
+        <td><span class="token-swatch-sm" style="background:var(--color-neutral)"></span></td>
+        <td class="token-desc">UI chrome, quiet dividers, disabled borders</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     05 · BUTTON COMPONENT
+════════════════════════════════════════════════════════════ -->
+<section id="button" class="sg-section">
+<div class="container">
+
+  <div class="section-header">
+    <div class="section-label">05 · Component · Button</div>
+    <h2 class="section-title">Button</h2>
+    <p class="section-desc">Four variants. IBM Plex Mono uppercase. 2px border radius. Primary and Secondary are filled; Ghost is outlined on light backgrounds; Ghost Dark is outlined on dark backgrounds. Use the theme toggle to see behaviour on both.</p>
+  </div>
+
+  <!-- Live variants -->
+  <div class="subsection">
+    <div class="subsection-label">Variants — Interactive</div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:40px; padding:32px; background:var(--surface); border-radius:2px">
+      <button class="btn btn-primary">Order Catering</button>
+      <button class="btn btn-secondary">Visit Our Space</button>
+      <button class="btn btn-ghost">Learn More</button>
+      <button class="btn btn-primary btn-sm">Small Primary</button>
+      <button class="btn btn-secondary btn-sm">Small Secondary</button>
+    </div>
+    <!-- Dark background demo -->
+    <div style="display:flex; gap:12px; flex-wrap:wrap; padding:32px; background:var(--color-dark); border-radius:2px">
+      <button class="btn btn-primary">Order Catering</button>
+      <button class="btn btn-secondary">Visit Our Space</button>
+      <button class="btn btn-ghost-dark">Learn More</button>
+    </div>
+  </div>
+
+  <!-- All states -->
+  <div class="subsection">
+    <div class="subsection-label">All States — Primary (Terracotta)</div>
+    <div class="states-grid">
+      <div class="state-cell">
+        <div class="state-name">Default</div>
+        <button class="btn btn-primary">Order Catering</button>
+      </div>
+      <div class="state-cell">
+        <div class="state-name">Hover</div>
+        <button class="btn btn-primary state-hover">Order Catering</button>
+      </div>
+      <div class="state-cell">
+        <div class="state-name">Focus</div>
+        <button class="btn btn-primary state-focus">Order Catering</button>
+      </div>
+      <div class="state-cell">
+        <div class="state-name">Active</div>
+        <button class="btn btn-primary state-active">Order Catering</button>
+      </div>
+      <div class="state-cell">
+        <div class="state-name">Disabled</div>
+        <button class="btn btn-primary is-disabled">Order Catering</button>
+      </div>
+      <div class="state-cell dark-bg">
+        <div class="state-name state-name-on-dark">On Dark — Default</div>
+        <button class="btn btn-primary">Order Catering</button>
+      </div>
+    </div>
+
+    <div class="subsection-label" style="margin-top:32px">All States — Secondary (Olive Haze)</div>
+    <div class="states-grid">
+      <div class="state-cell">
+        <div class="state-name">Default</div>
+        <button class="btn btn-secondary">Visit Our Space</button>
+      </div>
+      <div class="state-cell">
+        <div class="state-name">Hover</div>
+        <button class="btn btn-secondary state-hover">Visit Our Space</button>
+      </div>
+      <div class="state-cell">
+        <div class="state-name">Focus</div>
+        <button class="btn btn-secondary state-focus">Visit Our Space</button>
+      </div>
+      <div class="state-cell">
+        <div class="state-name">Active</div>
+        <button class="btn btn-secondary state-active">Visit Our Space</button>
+      </div>
+      <div class="state-cell">
+        <div class="state-name">Disabled</div>
+        <button class="btn btn-secondary is-disabled">Visit Our Space</button>
+      </div>
+      <div class="state-cell dark-bg">
+        <div class="state-name state-name-on-dark">On Dark — Default</div>
+        <button class="btn btn-secondary">Visit Our Space</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spec table -->
+  <div class="subsection">
+    <div class="subsection-label">Button Specification</div>
+    <table class="spec-table">
+      <thead><tr><th>Property</th><th>Value</th><th>Token</th></tr></thead>
+      <tbody>
+        <tr><td>Font family</td><td>IBM Plex Mono</td><td class="spec-val">--font-mono</td></tr>
+        <tr><td>Font size</td><td>11px</td><td class="spec-val">--font-size-xs</td></tr>
+        <tr><td>Font weight</td><td>500 (Medium)</td><td class="spec-val">--font-weight-medium</td></tr>
+        <tr><td>Letter spacing</td><td>0.15em</td><td class="spec-val">--tracking-widest</td></tr>
+        <tr><td>Text transform</td><td>uppercase</td><td class="spec-val">—</td></tr>
+        <tr><td>Height (default)</td><td>48px</td><td class="spec-val">--btn-height</td></tr>
+        <tr><td>Height (small)</td><td>36px</td><td class="spec-val">--btn-height-sm</td></tr>
+        <tr><td>Padding x</td><td>24px</td><td class="spec-val">--space-6</td></tr>
+        <tr><td>Border radius</td><td>2px</td><td class="spec-val">--radius-sm</td></tr>
+        <tr><td>Transition</td><td>150ms ease-in-out</td><td class="spec-val">--transition-fast</td></tr>
+        <tr><td>Focus ring</td><td>2px offset + 4px ring</td><td class="spec-val">--ring</td></tr>
+        <tr><td>Active transform</td><td>translateY(1px)</td><td class="spec-val">—</td></tr>
+        <tr><td colspan="3" style="background:var(--surface); font-family:var(--font-mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted-foreground); padding:8px 16px">Variant — Ghost Dark (use on dark backgrounds)</td></tr>
+        <tr><td>Border</td><td>1px solid rgba(255,255,255,0.25)</td><td class="spec-val">—</td></tr>
+        <tr><td>Text color</td><td>Cream</td><td class="spec-val">--color-cream</td></tr>
+        <tr><td>Hover background</td><td>Arena #EAE2C7</td><td class="spec-val">--color-arena</td></tr>
+        <tr><td>Hover text</td><td>Soil #3F2814</td><td class="spec-val">--color-soil</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Code example -->
+  <div class="subsection">
+    <div class="subsection-label">Usage</div>
+    <div class="code-block">
+<pre><span class="code-comment">/* Primary — Terracotta */</span>
+<span class="code-prop">&lt;button</span> <span class="code-var">class</span>=<span class="code-val">"btn btn-primary"</span><span class="code-prop">&gt;</span>Order Catering<span class="code-prop">&lt;/button&gt;</span>
+
+<span class="code-comment">/* Secondary — Olive Haze */</span>
+<span class="code-prop">&lt;button</span> <span class="code-var">class</span>=<span class="code-val">"btn btn-secondary"</span><span class="code-prop">&gt;</span>Visit Our Space<span class="code-prop">&lt;/button&gt;</span>
+
+<span class="code-comment">/* Ghost — outlined, for light backgrounds */</span>
+<span class="code-prop">&lt;button</span> <span class="code-var">class</span>=<span class="code-val">"btn btn-ghost"</span><span class="code-prop">&gt;</span>Learn More<span class="code-prop">&lt;/button&gt;</span>
+
+<span class="code-comment">/* Ghost Dark — outlined, for dark backgrounds (nav hero, dark sections) */</span>
+<span class="code-prop">&lt;button</span> <span class="code-var">class</span>=<span class="code-val">"btn btn-ghost-dark"</span><span class="code-prop">&gt;</span>Learn More<span class="code-prop">&lt;/button&gt;</span>
+
+<span class="code-comment">/* Small variant — add .btn-sm */</span>
+<span class="code-prop">&lt;button</span> <span class="code-var">class</span>=<span class="code-val">"btn btn-primary btn-sm"</span><span class="code-prop">&gt;</span>Submit<span class="code-prop">&lt;/button&gt;</span>
+
+<span class="code-comment">/* Disabled */</span>
+<span class="code-prop">&lt;button</span> <span class="code-var">class</span>=<span class="code-val">"btn btn-primary"</span> <span class="code-var">disabled</span><span class="code-prop">&gt;</span>Unavailable<span class="code-prop">&lt;/button&gt;</span></pre>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     06 · NAVIGATION COMPONENT
+════════════════════════════════════════════════════════════ -->
+<section id="navigation" class="sg-section">
+<div class="container">
+
+  <div class="section-header">
+    <div class="section-label">06 · Component · Navigation</div>
+    <h2 class="section-title">Navigation / Header</h2>
+    <p class="section-desc">Always dark background. Three-column layout: links left, wordmark center, meta right. On scroll, background transitions from transparent to <code>rgba(26,26,26,0.95)</code> with backdrop blur. Mobile collapses to hamburger.</p>
+  </div>
+
+  <!-- Desktop demo -->
+  <div class="subsection">
+    <div class="subsection-label">Desktop (80px height)</div>
+    <div class="nav-demo">
+      <div class="nav-demo-label">Desktop — Default state</div>
+      <nav class="demo-nav">
+        <ul class="demo-nav-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Catering</a></li>
+        </ul>
+        <div class="demo-nav-wordmark"><img src="logos/LOGO_TR – SIMPLE.svg" alt="True Roots" style="height:16px; display:block; filter:invert(1);"></div>
+        <div class="demo-nav-right">
+          <span class="demo-nav-meta">Mon–Fri, 9:00–17:00</span>
+          <span class="demo-nav-lang"><span class="active">EN</span> | ES</span>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Scrolled state -->
+    <div class="nav-demo">
+      <div class="nav-demo-label">Desktop — Scrolled (backdrop blur active)</div>
+      <nav class="demo-nav" style="background:rgba(26,26,26,0.95); backdrop-filter:blur(12px)">
+        <ul class="demo-nav-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Catering</a></li>
+        </ul>
+        <div class="demo-nav-wordmark"><img src="logos/LOGO_TR – SIMPLE.svg" alt="True Roots" style="height:16px; display:block; filter:invert(1);"></div>
+        <div class="demo-nav-right">
+          <span class="demo-nav-meta">Mon–Fri, 9:00–17:00</span>
+          <span class="demo-nav-lang"><span class="active">EN</span> | ES</span>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Mobile demo -->
+  <div class="subsection">
+    <div class="subsection-label">Mobile (60px height)</div>
+    <div class="nav-demo" style="max-width:390px">
+      <div class="nav-demo-label">Mobile — Closed</div>
+      <nav class="demo-nav-mobile">
+        <div class="wordmark"><img src="logos/LOGO_TR – SIMPLE.svg" alt="True Roots" style="height:16px; display:block; filter:invert(1);"></div>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Nav spec -->
+  <div class="subsection">
+    <div class="subsection-label">Navigation Specification</div>
+    <table class="spec-table">
+      <thead><tr><th>Property</th><th>Value</th><th>Token</th></tr></thead>
+      <tbody>
+        <tr><td>Height (desktop)</td><td>80px</td><td class="spec-val">--header-height</td></tr>
+        <tr><td>Height (mobile)</td><td>60px</td><td class="spec-val">--header-height-mobile</td></tr>
+        <tr><td>Background (default)</td><td>transparent</td><td class="spec-val">—</td></tr>
+        <tr><td>Background (scrolled)</td><td>rgba(26,26,26,0.95)</td><td class="spec-val">--nav-bg-scrolled</td></tr>
+        <tr><td>Backdrop filter</td><td>blur(12px)</td><td class="spec-val">—</td></tr>
+        <tr><td>Z-index</td><td>200</td><td class="spec-val">--z-sticky</td></tr>
+        <tr><td>Link font</td><td>IBM Plex Mono 400 / 12px / +0.03em</td><td class="spec-val">--font-mono</td></tr>
+        <tr><td>Link color</td><td>Cream</td><td class="spec-val">--nav-fg / --color-cream</td></tr>
+        <tr><td>Link hover color</td><td>Arena #EAE2C7</td><td class="spec-val">--nav-link-hover</td></tr>
+        <tr><td>Wordmark</td><td>SVG logo — LOGO_TR – SIMPLE.svg, 16px height, filter:invert(1)</td><td class="spec-val">—</td></tr>
+        <tr><td>Meta font</td><td>IBM Plex Mono / 11px / +0.04em</td><td class="spec-val">--font-mono</td></tr>
+        <tr><td>Meta color</td><td>Light Soil #918370</td><td class="spec-val">--muted-foreground</td></tr>
+        <tr><td>Position</td><td>fixed (top)</td><td class="spec-val">—</td></tr>
+        <tr><td>Mobile breakpoint</td><td>768px</td><td class="spec-val">--bp-md</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Interaction notes -->
+  <div class="callout">
+    <p><strong>Scroll behaviour:</strong> Attach a scroll listener. When <code>window.scrollY &gt; 20</code>, add class <code>.is-scrolled</code> to the nav. This transitions background from transparent to <code>rgba(26,26,26,0.95)</code> with <code>backdrop-filter: blur(12px)</code>. Transition duration: 250ms.</p>
+  </div>
+  <div class="callout" style="margin-top:12px">
+    <p><strong>Accessibility:</strong> Nav must use <code>&lt;nav aria-label="Main"&gt;</code>. Language toggle buttons use <code>aria-pressed</code> and <code>lang</code> attributes. Keyboard focus should be visible via <code>--ring</code> token.</p>
+  </div>
+
+</div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     07 · LOGO SYSTEM
+════════════════════════════════════════════════════════════ -->
+<style>
+/* Logo section styles */
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-bottom: 40px;
+}
+.logo-card {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.logo-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  min-height: 140px;
+}
+.logo-preview.bg-cream { background: var(--color-cream); }
+.logo-preview.bg-dark  { background: var(--color-dark); }
+.logo-preview.bg-soil  { background: var(--color-soil); }
+.logo-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 80px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.logo-preview.bg-dark img,
+.logo-preview.bg-soil img {
+  filter: invert(1);
+}
+.logo-info {
+  padding: 14px 16px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.logo-name {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 2px;
+}
+.logo-file {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted-foreground);
+  margin-bottom: 6px;
+}
+.logo-use {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+.logo-bg-toggle {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 24px;
+}
+.logo-bg-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 150ms ease;
+}
+.logo-bg-btn.active, .logo-bg-btn:hover {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+.logo-usage-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 16px;
+}
+.logo-usage-table th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.logo-usage-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  vertical-align: top;
+  line-height: 1.5;
+}
+.logo-usage-table tr:last-child td { border-bottom: none; }
+.logo-usage-table tr:hover td { background: rgba(174,108,64,0.04); }
+.logo-usage-table .file { font-family: var(--font-mono); font-size: 11px; color: var(--primary); }
+</style>
+
+<section id="logos" class="sg-section">
+<div class="container">
+
+  <div class="section-header">
+    <div class="section-label">07 · Logo System</div>
+    <h2 class="section-title">12 variants. One identity.</h2>
+    <p class="section-desc">All logos are black vector marks — color is applied via context (cream or dark surface). Never stretch, recolor, or add effects. Use the lightest/simplest variant that fits the space.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>Color rule:</strong> Logos are always monochrome. On cream or light surfaces — black as-is. On dark/soil surfaces — white (achieved via CSS <code>filter: invert(1)</code> or by using the white-fill version). Never use Terracotta or Olive Haze on the logomark itself.</p>
+  </div>
+
+  <!-- Primary Marks -->
+  <div class="subsection">
+    <div class="subsection-label">Primary Marks</div>
+    <div class="logo-grid">
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – ISOTYPE.svg" alt="True Roots Isotype">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Isotype</div>
+          <div class="logo-file">LOGO_TR – ISOTYPE.svg</div>
+          <div class="logo-use">App icon, favicon, stamp, emboss. Min. size: 32px.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – FULL.svg" alt="True Roots Full Logo">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Full Logo</div>
+          <div class="logo-file">LOGO_TR – FULL.svg</div>
+          <div class="logo-use">Primary brand mark. Use on all main touchpoints — web hero, presentations, packaging.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – FULL - CLAIM.svg" alt="True Roots Full Logo with Claim">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Full + Claim</div>
+          <div class="logo-file">LOGO_TR – FULL - CLAIM.svg</div>
+          <div class="logo-use">Full mark with "Food for Longevity" tagline. Use in brand introductions and premium collateral.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Submarks -->
+  <div class="subsection">
+    <div class="subsection-label">Submarks — TR Letterform</div>
+    <div class="logo-grid">
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – SUBMARK.svg" alt="True Roots Submark">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Submark</div>
+          <div class="logo-file">LOGO_TR – SUBMARK.svg</div>
+          <div class="logo-use">TR letterform. Use in secondary applications — profile photos, watermarks, co-branding.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – SUBMARK - CLAIM.svg" alt="True Roots Submark with Claim">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Submark + Claim</div>
+          <div class="logo-file">LOGO_TR – SUBMARK - CLAIM.svg</div>
+          <div class="logo-use">TR letterform with claim text. Use in printed materials and editorial contexts.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-dark">
+          <img src="logos/LOGO_TR – SUBMARK.svg" alt="True Roots Submark on dark">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Submark — Dark BG</div>
+          <div class="logo-file">filter: invert(1)</div>
+          <div class="logo-use">How the submark appears on the bistro website and dark surfaces.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bistro Variants -->
+  <div class="subsection">
+    <div class="subsection-label">Bistro Variants</div>
+    <div class="logo-grid">
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – BISTRO.svg" alt="True Roots Bistro">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Bistro</div>
+          <div class="logo-file">LOGO_TR – BISTRO.svg</div>
+          <div class="logo-use">Bistro-specific mark. Use on bistro menus, signage, packaging, and bistro website header.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – BISTRO - LOCATION.svg" alt="True Roots Bistro with Location">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Bistro + Location</div>
+          <div class="logo-file">LOGO_TR – BISTRO - LOCATION.svg</div>
+          <div class="logo-use">With address. Use on catering menus, delivery materials, local print advertising.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-soil">
+          <img src="logos/LOGO_TR – BISTRO.svg" alt="True Roots Bistro on soil">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Bistro — Soil BG</div>
+          <div class="logo-file">filter: invert(1) on --color-soil</div>
+          <div class="logo-use">Premium variant for packaging and branded packaging with dark brown surface.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Text & Slogan Marks -->
+  <div class="subsection">
+    <div class="subsection-label">Text &amp; Claim Variants</div>
+    <div class="logo-grid">
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – SIMPLE.svg" alt="True Roots Simple">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Simple / Wordmark</div>
+          <div class="logo-file">LOGO_TR – SIMPLE.svg</div>
+          <div class="logo-use">Text-only wordmark. Use in contexts where the mark is already established (e.g., navigation bar center text).</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – CLAIM.svg" alt="True Roots Claim">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Claim</div>
+          <div class="logo-file">LOGO_TR – CLAIM.svg</div>
+          <div class="logo-use">Circular mark with claim. Use in editorial, social media thumbnails, and certification contexts.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – SLOGAN.svg" alt="True Roots Slogan">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Slogan</div>
+          <div class="logo-file">LOGO_TR – SLOGAN.svg</div>
+          <div class="logo-use">"Food for Longevity" horizontal text mark. Use in footers, email signatures, and supplementary branding.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – SLOGAN - COORDINATES.svg" alt="True Roots Slogan with Coordinates">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Slogan + Coordinates</div>
+          <div class="logo-file">LOGO_TR – SLOGAN - COORDINATES.svg</div>
+          <div class="logo-use">With GPS coordinates (41.2409°N 02.1157°W). Use on packaging, menus, and location-anchored materials.</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview bg-cream">
+          <img src="logos/LOGO_TR – WEB.svg" alt="True Roots Web">
+        </div>
+        <div class="logo-info">
+          <div class="logo-name">Web</div>
+          <div class="logo-file">LOGO_TR – WEB.svg</div>
+          <div class="logo-use">Horizontal web-optimized mark. Preferred for website header, footer, and digital-first contexts.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Usage rules table -->
+  <div class="subsection">
+    <div class="subsection-label">Usage Reference</div>
+    <table class="logo-usage-table">
+      <thead>
+        <tr>
+          <th>Variant</th>
+          <th>Backgrounds</th>
+          <th>Min. Size</th>
+          <th>Primary Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="file">ISOTYPE</td>
+          <td>Cream / Dark / Soil</td>
+          <td>32px</td>
+          <td>App icon, favicon, emboss, stamp</td>
+        </tr>
+        <tr>
+          <td class="file">FULL</td>
+          <td>Cream / Dark / Soil</td>
+          <td>120px wide</td>
+          <td>Hero, presentations, packaging — standard brand mark</td>
+        </tr>
+        <tr>
+          <td class="file">FULL – CLAIM</td>
+          <td>Cream / Dark</td>
+          <td>160px wide</td>
+          <td>Premium collateral, brand introductions, about pages</td>
+        </tr>
+        <tr>
+          <td class="file">SUBMARK</td>
+          <td>Cream / Dark / Soil</td>
+          <td>48px</td>
+          <td>Social profile, co-branding, watermark</td>
+        </tr>
+        <tr>
+          <td class="file">BISTRO</td>
+          <td>Cream / Dark / Soil</td>
+          <td>140px wide</td>
+          <td>Bistro website, menus, bistro-specific signage</td>
+        </tr>
+        <tr>
+          <td class="file">BISTRO – LOCATION</td>
+          <td>Cream / Arena</td>
+          <td>180px wide</td>
+          <td>Printed menus, delivery packaging, local advertising</td>
+        </tr>
+        <tr>
+          <td class="file">SIMPLE</td>
+          <td>Cream / Dark</td>
+          <td>80px wide</td>
+          <td>Navigation wordmark, secondary text references</td>
+        </tr>
+        <tr>
+          <td class="file">CLAIM</td>
+          <td>Cream / Arena</td>
+          <td>80px</td>
+          <td>Editorial, thumbnails, certification contexts</td>
+        </tr>
+        <tr>
+          <td class="file">SLOGAN</td>
+          <td>Cream / Arena / Dark</td>
+          <td>160px wide</td>
+          <td>Footer, email signatures, supplementary brand text</td>
+        </tr>
+        <tr>
+          <td class="file">SLOGAN – COORDINATES</td>
+          <td>Cream / Arena</td>
+          <td>200px wide</td>
+          <td>Packaging, menus, location-anchored print</td>
+        </tr>
+        <tr>
+          <td class="file">WEB</td>
+          <td>Dark / Cream</td>
+          <td>160px wide</td>
+          <td>Website header, footer, digital-first contexts</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout" style="margin-top:32px">
+    <p><strong>Don'ts:</strong> Never rotate, skew, stretch, apply drop shadows, recolor in brand palette, place on busy photography without contrast overlay, or use multiple variants simultaneously in the same layout. Use the simplest variant that maintains legibility at the intended size.</p>
+  </div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="sg-footer">
+  <span class="sg-footer-brand"><span>True Roots</span> · Design System · Version 2.0</span>
+  <span class="sg-footer-meta">Bowl &amp; Soul, S.L. · Barcelona · March 2026</span>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const label = document.getElementById('themeLabel');
+    const current = html.getAttribute('data-theme');
+
+    if (current === 'dark') {
+      html.setAttribute('data-theme', 'light');
+      label.textContent = 'Light';
+      btn.querySelector('.icon').textContent = '☀';
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      label.textContent = 'Dark';
+      btn.querySelector('.icon').textContent = '☾';
+    }
+  }
+
+  // Scroll-reveal: observe each section and mark visible
+  (function() {
+    const sections = document.querySelectorAll('.sg-section');
+    if (!sections.length) return;
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+    sections.forEach((section, i) => {
+      section.style.animationDelay = (i * 0.04) + 's';
+      io.observe(section);
+    });
+
+    // Also reveal cover immediately (it's above the fold)
+    const cover = document.querySelector('.cover');
+    if (cover) cover.style.animation = 'sg-reveal 0.6s cubic-bezier(0.22,1,0.36,1) both';
+  })();
+</script>
+
+</body>
+</html>
